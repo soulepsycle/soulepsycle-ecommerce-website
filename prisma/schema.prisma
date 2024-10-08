@@ -14,6 +14,7 @@ model User {
   email String @unique
   password String
   role ROLE @default(USER)
+  status USER_STATUS @default(PENDING)
 
   orders Order[]
   bag Bag[]
@@ -29,6 +30,13 @@ enum ROLE {
   ADMIN
 }
 
+enum USER_STATUS {
+  ACTIVE
+  INACTIVE
+  PENDING
+  BANNED
+}
+
 model Product {
   id String @id @unique @default(uuid())
   // must create caegory first
@@ -40,6 +48,7 @@ model Product {
   description String?
   price Float
   code String
+  status PRODUCT_STATUS @default(ACTIVE)
 
   product_variant_color ProductVariantColor[]
   review Review[]
@@ -67,14 +76,20 @@ model ProductVariantSize {
   size String
 
   stock Int @default(0)
-  stock_status PRODUCT_STATUS @default(IN_STOCK) // if stock is below 10, then status is "LOW_STOCK", else if stock is above 10, then status is "IN_STOCK", else if stock is 0, then status is "OUT_STOCK"
+  stock_status PRODUCT_STOCK_STATUS @default(IN_STOCK) // if stock is below 10, then status is "LOW_STOCK", else if stock is above 10, then status is "IN_STOCK", else if stock is 0, then status is "OUT_STOCK"
 
   bagItem BagItem[]
   orderItem OrderItem[]
 }
 
 enum PRODUCT_STATUS {
-    IN_STOCK
+    ACTIVE
+    ARCHIVED
+    DRAFT
+}
+
+enum PRODUCT_STOCK_STATUS {
+IN_STOCK
     OUT_OF_STOCK
     LOW_STOCK
 }
