@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Bag {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  user_id    String?   @db.Uuid
+  User       User?     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  BagItem    BagItem[]
+}
+
+model BagItem {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bag_id               String?   @db.Uuid
+  product_variant_size BigInt
+  quantity             Int
+  created_at           DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime? @db.Timestamptz(6)
+  Bag                  Bag?      @relation(fields: [bag_id], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String    @unique
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime  @db.Timestamptz(6)
+  Product    Product[]
+}
+
+model Product {
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at          DateTime              @default(now()) @db.Timestamptz(6)
+  name                String                @unique
+  description         String?
+  price               Float                 @db.Real
+  code                String
+  updated_at          DateTime?             @db.Timestamptz(6)
+  category_id         String?               @db.Uuid
+  Category            Category?             @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  ProductVariantColor ProductVariantColor[]
+}
+
+model ProductVariantColor {
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  product_id         String               @db.Uuid
+  color              String               @unique
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?            @db.Timestamptz(6)
+  images             String[]
+  Product            Product              @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  ProductVariantSize ProductVariantSize[]
+}
+
+model ProductVariantSize {
+  created_at               DateTime            @default(now()) @db.Timestamptz(6)
+  stock                    Int
+  status                   PRODUCT_STATUS
+  size                     PRODUCT_SIZE
+  updated_at               DateTime?           @db.Timestamptz(6)
+  id                       String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  product_variant_color_id String              @db.Uuid
+  ProductVariantColor      ProductVariantColor @relation(fields: [product_variant_color_id], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  username   String   @unique
+  email      String?  @unique
+  password   String   @unique
+  Bag        Bag[]
+}
+
+enum PRODUCT_SIZE {
+  S
+  M
+  L
+}
+
+enum PRODUCT_STATUS {
+  ACTIVE
+  ARCHIVE
+  DRAFT
+}
