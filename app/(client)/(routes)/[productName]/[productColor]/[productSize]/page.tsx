@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { Ruler } from 'lucide-react'
 import ProductDetailVariantSize from "./components/product-detail-variant-size";
+import ProductDetailButtons from "./components/product-detail-buttons";
 
 const ProductDetailPage = async ({
 	params,
@@ -62,6 +63,11 @@ const ProductDetailPage = async ({
 							<ProductDetailVariantSize size="M"/>
 							<ProductDetailVariantSize isDisabled={true} size="L"/>
 						</div>
+					</div>
+
+					{/* Product Detail Buttons */}
+					<div className="max-w-xs flex flex-col gap-2">
+						<ProductDetailButtons />
 					</div>
 				</div>
 
