@@ -1,7 +1,13 @@
-
 export type TProducts = {
-    id: number;
-    image: string;
+	id: number;
     name: string;
-    price: string;
-}
+    price: number;
+    variants: {
+        color: string;
+        sizes: {
+            size: string;
+            stock: number;
+            status: string;
+        }[];
+    }[];
+};
