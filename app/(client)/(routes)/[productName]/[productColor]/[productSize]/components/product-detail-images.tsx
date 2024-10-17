@@ -31,7 +31,7 @@ const ProductDetailImages = () => {
 	}, [api]);
 
 	return (
-		<div className="w-full py-6 grid gap-2">
+		<div className="w-full grid gap-2">
 			<Carousel setApi={setApi} className="w-full">
 				<CarouselContent>
 					{Array.from({ length: 5 }).map((_, index) => (
