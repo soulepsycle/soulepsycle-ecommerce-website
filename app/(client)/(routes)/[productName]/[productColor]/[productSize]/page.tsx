@@ -4,9 +4,17 @@ import ProductDetailImages from "./components/product-detail-images";
 import ProductDetailVariantImage from "./components/product-detail-variant-image";
 import Link from "next/link";
 
-import { Ruler } from 'lucide-react'
+import { Ruler, Star } from "lucide-react";
 import ProductDetailVariantSize from "./components/product-detail-variant-size";
 import ProductDetailButtons from "./components/product-detail-buttons";
+
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
+import ProductReview from "./components/product-review";
 
 const ProductDetailPage = async ({
 	params,
@@ -24,7 +32,7 @@ const ProductDetailPage = async ({
 				<ProductDetailImages />
 			</div>
 
-			<div className="h-full overflow-hidden">
+			<div className="h-full overflow-y-scroll">
 				{/* Product Details */}
 				<div className="grid gap-6">
 					<div>
@@ -55,13 +63,24 @@ const ProductDetailPage = async ({
 					<div>
 						<div className="flex items-center justify-between">
 							<h4 className="text-lg mb-2 font-semibold">Size</h4>
-							<Link href={'/'} className="flex items-center gap-2"><Ruler className="w-4 h-4" /><span className="underline underline-offset-2">Size Guide</span></Link>
+							<Link
+								href={"/"}
+								className="flex items-center gap-2"
+							>
+								<Ruler className="w-4 h-4" />
+								<span className="underline underline-offset-2">
+									Size Guide
+								</span>
+							</Link>
 						</div>
 
 						<div className="flex items-center flex-wrap gap-2">
-							<ProductDetailVariantSize isActive size="S"/>
-							<ProductDetailVariantSize size="M"/>
-							<ProductDetailVariantSize isDisabled={true} size="L"/>
+							<ProductDetailVariantSize isActive size="S" />
+							<ProductDetailVariantSize size="M" />
+							<ProductDetailVariantSize
+								isDisabled={true}
+								size="L"
+							/>
 						</div>
 					</div>
 
@@ -72,7 +91,93 @@ const ProductDetailPage = async ({
 				</div>
 
 				{/* Reviews */}
-				<div></div>
+				<div>
+					<Accordion type="single" collapsible>
+						<AccordionItem value="item-1">
+							<AccordionTrigger>
+								<div className="flex items-center gap-4 text-2xl">
+									<div>Reviews (99)</div>
+
+									<div className="flex gap-2">
+										<Star className="w-4 h-4" />
+										<Star className="w-4 h-4" />
+										<Star className="w-4 h-4" />
+										<Star className="w-4 h-4" />
+										<Star className="w-4 h-4" />
+									</div>
+								</div>
+							</AccordionTrigger>
+							<AccordionContent className="grid gap-6">
+								<ProductReview
+									title={
+										"These shoes saved my feet in a motorcycle crash"
+									}
+									rating={5}
+									reviewed_at={"24 Sept 2024"}
+									user={"Jogo"}
+									comment={
+										"I was in a horrible motorcycle accident at 60 miles an hour and these shoes saved my feet. I slid on the road for over 200 feet and these shoes stayed"
+									}
+								/>
+								<ProductReview
+									title={
+										"These shoes saved my feet in a motorcycle crash"
+									}
+									rating={5}
+									reviewed_at={"24 Sept 2024"}
+									user={"Jogo"}
+									comment={
+										"I was in a horrible motorcycle accident at 60 miles an hour and these shoes saved my feet. I slid on the road for over 200 feet and these shoes stayed"
+									}
+								/>
+								<ProductReview
+									title={
+										"These shoes saved my feet in a motorcycle crash"
+									}
+									rating={5}
+									reviewed_at={"24 Sept 2024"}
+									user={"Jogo"}
+									comment={
+										"I was in a horrible motorcycle accident at 60 miles an hour and these shoes saved my feet. I slid on the road for over 200 feet and these shoes stayed"
+									}
+								/>
+								<ProductReview
+									title={
+										"These shoes saved my feet in a motorcycle crash"
+									}
+									rating={5}
+									reviewed_at={"24 Sept 2024"}
+									user={"Jogo"}
+									comment={
+										"I was in a horrible motorcycle accident at 60 miles an hour and these shoes saved my feet. I slid on the road for over 200 feet and these shoes stayed"
+									}
+								/>
+								<ProductReview
+									title={
+										"These shoes saved my feet in a motorcycle crash"
+									}
+									rating={5}
+									reviewed_at={"24 Sept 2024"}
+									user={"Jogo"}
+									comment={
+										"I was in a horrible motorcycle accident at 60 miles an hour and these shoes saved my feet. I slid on the road for over 200 feet and these shoes stayed"
+									}
+								/>
+								<ProductReview
+									title={
+										"These shoes saved my feet in a motorcycle crash"
+									}
+									rating={5}
+									reviewed_at={"24 Sept 2024"}
+									user={"Jogo"}
+									comment={
+										"I was in a horrible motorcycle accident at 60 miles an hour and these shoes saved my feet. I slid on the road for over 200 feet and these shoes stayed"
+									}
+								/>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+				</div>
 			</div>
 		</section>
 	);
