@@ -7,6 +7,7 @@ import {
 	CardHeader,
 } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ProductListingProps {
 	products: TProducts[];
@@ -16,10 +17,16 @@ const ProductListing: React.FC<ProductListingProps> = ({ products }) => {
 	return (
 		<div className="grid lg:grid-cols-3 gap-4">
 			{products.map((product) => {
-				const { id, name, price } = product;
+				const { id, name, price, variants } = product;
+
+				// Replace spaces with hyphens for better URLs
+				const formattedName = name.replace(/\s+/g, '-');
+				const productColor = variants.map((variant) => variant.color)[0]
+				const productSize = variants.map((variant) => variant.sizes.map((size) => size.size))[0]
 
 				return (
-					<Card key={id} className="">
+					<Link href={`${formattedName}/${productColor}/${productSize}`} key={id}>
+						<Card>
 						<CardHeader>
 							<div className="relative w-full h-[400px]">
 								<Image
@@ -37,6 +44,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ products }) => {
 							</div>
 						</CardContent>
 					</Card>
+					</Link>
 				);
 			})}
 		</div>
