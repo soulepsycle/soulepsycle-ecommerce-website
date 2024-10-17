@@ -46,8 +46,8 @@ const ProductDetailImages = () => {
 						</CarouselItem>
 					))}
 				</CarouselContent>
-				<CarouselPrevious />
-				<CarouselNext />
+				<CarouselPrevious className="left-6" />
+				<CarouselNext className="right-6"/>
 			</Carousel>
 			<div className="text-center text-sm text-muted-foreground">
 				Slide {current} of {count}
