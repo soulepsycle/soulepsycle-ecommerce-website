@@ -1,6 +1,4 @@
 import React from "react";
-
-import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -34,13 +32,49 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import ProductDataTable from "./components/product-data-table";
+import { columnsProductDataTable, TDataTableProduct } from "./components/product-data-table-columns";
+async function getData(): Promise<TDataTableProduct[]> {
+	// Fetch data from your API here or use dummy data for development purposes
+	return [
+	  {
+		id: "728ed52f",
+		name: "Product A",
+		code: "PROD-001",
+		stock: 150,
+		status: "In Stock",
+	  },
+	  {
+		id: "892ab43d",
+		name: "Product B",
+		code: "PROD-002",
+		stock: 75,
+		status: "Out of Stock",
+	  },
+	  {
+		id: "63da29f5",
+		name: "Product C",
+		code: "PROD-003",
+		stock: 200,
+		status: "In Stock",
+	  },
+	  {
+		id: "5fe7c918",
+		name: "Product D",
+		code: "PROD-004",
+		stock: 0,
+		status: "Discontinued",
+	  },
+	];
+  }
+  
 
 export const description =
 	"An products dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. It displays a list of products in a table with actions.";
 
-const InventoryPage = () => {
+const InventoryPage = async () => {
+	const products = await getData();
+
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
 			<aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -240,7 +274,7 @@ const InventoryPage = () => {
 					</div>
 				</header>
 				<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-					<ProductDataTable />
+					<ProductDataTable data={products} columns={columnsProductDataTable} />
 				</main>
 			</div>
 		</div>

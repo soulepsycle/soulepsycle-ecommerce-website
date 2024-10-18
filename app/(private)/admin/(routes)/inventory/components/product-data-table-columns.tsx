@@ -10,7 +10,7 @@ export type TDataTableProduct = {
     status: string;
 }
 
-export const columns: ColumnDef<TDataTableProduct>[] = [
+export const columnsProductDataTable: ColumnDef<TDataTableProduct>[] = [
     {
       accessorKey: "name",
       header: "Name",
