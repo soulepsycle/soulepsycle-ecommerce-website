@@ -114,6 +114,47 @@ const ProductCreateForm = () => {
 								</FormItem>
 							)}
 						/>
+
+						{/* Product Price */}
+						<FormField
+							control={form.control}
+							name="price"
+							render={({ field }) => (
+								<FormItem className="max-w-sm">
+									<FormLabel>Price</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="₱99.69"
+											{...field}
+											onChange={(e) =>
+												field.onChange(
+													Number(e.target.value)
+												)
+											}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						{/* Product Code */}
+						<FormField
+							control={form.control}
+							name="code"
+							render={({ field }) => (
+								<FormItem className="max-w-sm">
+									<FormLabel>Code</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="TOTELISIYUS"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 					</div>
 				</div>
 
