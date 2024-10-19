@@ -1,5 +1,6 @@
 "use client"
  
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table"
 
 export type TDataTableProduct = {
@@ -17,7 +18,9 @@ export const columnsProductDataTable: ColumnDef<TDataTableProduct>[] = [
     },
     {
       accessorKey: "code",
-      header: "Code",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Code" />
+      ),
     },
     {
       accessorKey: "stock",
