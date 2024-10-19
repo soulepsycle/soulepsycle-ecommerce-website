@@ -45,6 +45,7 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
+import { DataTablePagination } from "@/components/ui/data-table-pagination";
 
 interface ProductDataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -197,11 +198,8 @@ export function ProductDataTable<TData, TValue>({
 							</TableBody>
 						</Table>
 					</CardContent>
-					<CardFooter>
-						<div className="text-xs text-muted-foreground">
-							Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-							products
-						</div>
+					<CardFooter className="grid">
+						<DataTablePagination table={table} />
 					</CardFooter>
 				</Card>
 			</TabsContent>
