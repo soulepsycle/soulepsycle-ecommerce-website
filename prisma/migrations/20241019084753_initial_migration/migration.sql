@@ -1,8 +1,8 @@
 -- CreateEnum
-CREATE TYPE "PRODUCT_SIZE" AS ENUM ('S', 'M', 'L');
+CREATE TYPE "STOCK_SIZE" AS ENUM ('XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL');
 
 -- CreateEnum
-CREATE TYPE "PRODUCT_STATUS" AS ENUM ('ACTIVE', 'ARCHIVE', 'DRAFT');
+CREATE TYPE "STOCK_STATUS" AS ENUM ('IN_STOCK', 'OUT_OF_STOCK', 'DISCOUNTINUED');
 
 -- CreateTable
 CREATE TABLE "Bag" (
@@ -17,10 +17,10 @@ CREATE TABLE "Bag" (
 CREATE TABLE "BagItem" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "bag_id" UUID,
-    "product_variant_size" BIGINT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6),
+    "product_variant_size_id" UUID,
 
     CONSTRAINT "BagItem_pkey" PRIMARY KEY ("id")
 );
@@ -65,8 +65,8 @@ CREATE TABLE "ProductVariantColor" (
 CREATE TABLE "ProductVariantSize" (
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "stock" INTEGER NOT NULL,
-    "status" "PRODUCT_STATUS" NOT NULL,
-    "size" "PRODUCT_SIZE" NOT NULL,
+    "status" "STOCK_STATUS" NOT NULL,
+    "size" "STOCK_SIZE" NOT NULL,
     "updated_at" TIMESTAMPTZ(6),
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "product_variant_color_id" UUID NOT NULL,
@@ -108,6 +108,9 @@ ALTER TABLE "Bag" ADD CONSTRAINT "Bag_user_id_fkey" FOREIGN KEY ("user_id") REFE
 
 -- AddForeignKey
 ALTER TABLE "BagItem" ADD CONSTRAINT "BagItem_bag_id_fkey" FOREIGN KEY ("bag_id") REFERENCES "Bag"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BagItem" ADD CONSTRAINT "BagItem_product_variant_size_id_fkey" FOREIGN KEY ("product_variant_size_id") REFERENCES "ProductVariantSize"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;

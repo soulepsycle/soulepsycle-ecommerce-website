@@ -250,13 +250,9 @@ const InventoryPage = async () => {
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbLink asChild>
-									<Link href="#">Products</Link>
-								</BreadcrumbLink>
-							</BreadcrumbItem>
-							<BreadcrumbSeparator />
-							<BreadcrumbItem>
-								<BreadcrumbPage>All Products</BreadcrumbPage>
+								<BreadcrumbPage>
+									Inventory
+								</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
 					</Breadcrumb>

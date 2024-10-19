@@ -17,13 +17,14 @@ model Bag {
 }
 
 model BagItem {
-  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  bag_id               String?   @db.Uuid
-  product_variant_size BigInt
-  quantity             Int
-  created_at           DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime? @db.Timestamptz(6)
-  Bag                  Bag?      @relation(fields: [bag_id], references: [id], onDelete: Cascade)
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bag_id                  String?             @db.Uuid
+  quantity                Int
+  created_at              DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?           @db.Timestamptz(6)
+  product_variant_size_id String?             @db.Uuid
+  Bag                     Bag?                @relation(fields: [bag_id], references: [id], onDelete: Cascade)
+  ProductVariantSize      ProductVariantSize? @relation(fields: [product_variant_size_id], references: [id], onDelete: Cascade)
 }
 
 model Category {
@@ -61,11 +62,12 @@ model ProductVariantColor {
 model ProductVariantSize {
   created_at               DateTime            @default(now()) @db.Timestamptz(6)
   stock                    Int
-  status                   PRODUCT_STATUS
-  size                     PRODUCT_SIZE
+  status                   STOCK_STATUS
+  size                     STOCK_SIZE
   updated_at               DateTime?           @db.Timestamptz(6)
   id                       String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   product_variant_color_id String              @db.Uuid
+  BagItem                  BagItem[]
   ProductVariantColor      ProductVariantColor @relation(fields: [product_variant_color_id], references: [id], onDelete: Cascade)
 }
 
@@ -78,14 +80,18 @@ model User {
   Bag        Bag[]
 }
 
-enum PRODUCT_SIZE {
+enum STOCK_SIZE {
+  XS
   S
   M
   L
+  XL
+  XXL
+  XXXL
 }
 
-enum PRODUCT_STATUS {
-  ACTIVE
-  ARCHIVE
-  DRAFT
+enum STOCK_STATUS {
+  IN_STOCK
+  OUT_OF_STOCK
+  DISCOUNTINUED
 }
