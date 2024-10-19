@@ -14,6 +14,7 @@ import {
 	getSortedRowModel,
 	SortingState,
 	useReactTable,
+	VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -24,15 +25,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import {
 	Table,
@@ -46,6 +38,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
+import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
 
 interface ProductDataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -57,6 +50,8 @@ export function ProductDataTable<TData, TValue>({
 	data,
 }: ProductDataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
+	const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>({})
 
 	const router = useRouter();
 
@@ -67,8 +62,10 @@ export function ProductDataTable<TData, TValue>({
 		getPaginationRowModel: getPaginationRowModel(),
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
+		onColumnVisibilityChange: setColumnVisibility,
 		state: {
 			sorting,
+			columnVisibility,
 		},
 	});
 
@@ -84,39 +81,8 @@ export function ProductDataTable<TData, TValue>({
 					</TabsTrigger>
 				</TabsList>
 				<div className="ml-auto flex items-center gap-2">
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button
-								variant="outline"
-								size="sm"
-								className="h-8 gap-1"
-							>
-								<ListFilter className="h-3.5 w-3.5" />
-								<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-									Filter
-								</span>
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>Filter by</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuCheckboxItem checked>
-								Active
-							</DropdownMenuCheckboxItem>
-							<DropdownMenuCheckboxItem>
-								Draft
-							</DropdownMenuCheckboxItem>
-							<DropdownMenuCheckboxItem>
-								Archived
-							</DropdownMenuCheckboxItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-					<Button size="sm" variant="outline" className="h-8 gap-1">
-						<File className="h-3.5 w-3.5" />
-						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-							Export
-						</span>
-					</Button>
+					<DataTableViewOptions table={table} />
+
 					<Button
 						size="sm"
 						className="h-8 gap-1"
