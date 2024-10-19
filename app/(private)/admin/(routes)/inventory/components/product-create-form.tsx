@@ -2,7 +2,7 @@
 
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { createProductSchema } from "@/lib/schemas";
 import { TCreateProduct } from "@/lib/types";
 
@@ -21,6 +21,13 @@ import { STOCK_SIZE, STOCK_STATUS } from "@/lib/enums";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill's styles
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 const ProductCreateForm = () => {
 	const modules = {
@@ -64,6 +71,15 @@ const ProductCreateForm = () => {
 		// ✅ This will be type-safe and validated.
 		console.log(values);
 	}
+
+	const {
+		fields: variantColorFields,
+		append: variantColorsAppend,
+		remove: variantColorsRemove,
+	} = useFieldArray({
+		name: "ProductVariantColor",
+		control: form.control,
+	});
 
 	return (
 		<Form {...form}>
@@ -159,6 +175,44 @@ const ProductCreateForm = () => {
 				</div>
 
 				{/* Product Variants */}
+				<div className="relative border rounded-md shadow-sm p-6">
+					<h2 className="text-2xl mb-6">Variant Colors</h2>
+					{variantColorFields.map((color, colorIdx) => {
+						return (
+							<div key={color.id} className="border rounded-md shadow-sm p-6">
+								{/* Variant Color */}
+								<FormField
+									control={form.control}
+									name={`ProductVariantColor.${colorIdx}.color`}
+									render={({ field }) => (
+										<FormItem className="max-w-sm">
+											<FormLabel>Color #{colorIdx+1}</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Select a color" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem value="red">
+														Red
+													</SelectItem>
+													<SelectItem value="blue">
+														Blue
+													</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						);
+					})}
+				</div>
 			</form>
 		</Form>
 	);
