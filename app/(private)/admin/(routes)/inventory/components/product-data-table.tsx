@@ -2,14 +2,16 @@
 
 import React, { useState } from "react";
 
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import {
 	ColumnDef,
+	ColumnFiltersState,
 	flexRender,
 	getCoreRowModel,
+	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
 	SortingState,
@@ -39,6 +41,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
+import { Input } from "@/components/ui/input";
 
 interface ProductDataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -50,8 +53,10 @@ export function ProductDataTable<TData, TValue>({
 	data,
 }: ProductDataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
-	const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({})
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+		{}
+	);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
 	const router = useRouter();
 
@@ -63,9 +68,12 @@ export function ProductDataTable<TData, TValue>({
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
 		onColumnVisibilityChange: setColumnVisibility,
+		onColumnFiltersChange: setColumnFilters,
+		getFilteredRowModel: getFilteredRowModel(),
 		state: {
 			sorting,
 			columnVisibility,
+			columnFilters,
 		},
 	});
 
@@ -81,6 +89,24 @@ export function ProductDataTable<TData, TValue>({
 					</TabsTrigger>
 				</TabsList>
 				<div className="ml-auto flex items-center gap-2">
+					<div className="relative ml-auto flex-1 md:grow-0">
+						<Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+						<Input
+							placeholder="Filter name..."
+							value={
+								(table
+									.getColumn("name")
+									?.getFilterValue() as string) ?? ""
+							}
+							onChange={(event) =>
+								table
+									.getColumn("name")
+									?.setFilterValue(event.target.value)
+							}
+							className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+						/>
+					</div>
+					
 					<DataTableViewOptions table={table} />
 
 					<Button
