@@ -19,7 +19,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { STOCK_SIZE, STOCK_STATUS } from "@/lib/enums";
 
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill's styles
+
 const ProductCreateForm = () => {
+	const modules = {
+		toolbar: [
+			[{ header: "1" }, { header: "2" }],
+			[{ list: "ordered" }, { list: "bullet" }],
+			["bold", "italic", "underline", "strike", "blockquote"],
+			["link"],
+			["clean"],
+		],
+	};
+
 	// 1. Define your form.
 	const form = useForm<TCreateProduct>({
 		resolver: zodResolver(createProductSchema),
@@ -59,19 +72,49 @@ const ProductCreateForm = () => {
 				<div className="border rounded-md shadow-sm p-6">
 					<h1 className="text-3xl mb-6">Product</h1>
 
-					<FormField
-						control={form.control}
-						name="name"
-						render={({ field }) => (
-							<FormItem className="max-w-sm">
-								<FormLabel>Name</FormLabel>
-								<FormControl>
-									<Input placeholder="Tote Bag na Malupet..." {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<div className="max-w-3xl grid gap-4">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem className="max-w-sm">
+									<FormLabel>Name</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="Tote Bag na Malupet..."
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						{/* Product Description */}
+						<FormField
+							control={form.control}
+							name="description"
+							render={({ field }) => (
+								<FormItem className="w-full">
+									<FormLabel>Description</FormLabel>
+									<FormControl>
+										<ReactQuill
+											theme="snow"
+											value={field.value || ""}
+											onChange={field.onChange}
+											modules={modules}
+											placeholder="Enter the product description..."
+										/>
+									</FormControl>
+									<FormDescription>
+										Provide a detailed description of the
+										product.
+									</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 				</div>
 
 				{/* Product Variants */}
