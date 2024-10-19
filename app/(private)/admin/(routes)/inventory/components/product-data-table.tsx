@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { File, ListFilter, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
