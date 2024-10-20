@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { createProductSchema } from "@/lib/schemas";
@@ -28,6 +28,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import ProductImageUploader from "./product-image-uploader";
+import { PlusCircleIcon, Trash2 } from "lucide-react";
 
 const ProductCreateForm = () => {
 	const modules = {
@@ -44,18 +46,18 @@ const ProductCreateForm = () => {
 	const form = useForm<TCreateProduct>({
 		resolver: zodResolver(createProductSchema),
 		defaultValues: {
-			category_id: "",
-			name: "",
-			code: "",
-			description: "",
-			price: 0,
+			category_id: "test-category",
+			name: "test-name",
+			code: "test-code",
+			description: "test-description",
+			price: 123,
 			ProductVariantColor: [
 				{
-					color: "",
+					color: "red",
 					images: [],
 					ProductVariantSize: [
 						{
-							stock: 0,
+							stock: 21,
 							size: STOCK_SIZE.S,
 							status: STOCK_STATUS.IN_STOCK,
 						},
@@ -72,6 +74,10 @@ const ProductCreateForm = () => {
 		console.log(values);
 	}
 
+	useEffect(() => {
+		console.log(form.getValues());
+	}, []);
+
 	const {
 		fields: variantColorFields,
 		append: variantColorsAppend,
@@ -80,6 +86,8 @@ const ProductCreateForm = () => {
 		name: "ProductVariantColor",
 		control: form.control,
 	});
+
+	console.log("variantColorFields: " + variantColorFields);
 
 	return (
 		<Form {...form}>
@@ -177,41 +185,96 @@ const ProductCreateForm = () => {
 				{/* Product Variants */}
 				<div className="relative border rounded-md shadow-sm p-6">
 					<h2 className="text-2xl mb-6">Variant Colors</h2>
-					{variantColorFields.map((color, colorIdx) => {
-						return (
-							<div key={color.id} className="border rounded-md shadow-sm p-6">
-								{/* Variant Color */}
-								<FormField
-									control={form.control}
-									name={`ProductVariantColor.${colorIdx}.color`}
-									render={({ field }) => (
-										<FormItem className="max-w-sm">
-											<FormLabel>Color #{colorIdx+1}</FormLabel>
-											<Select
-												onValueChange={field.onChange}
-												defaultValue={field.value}
-											>
-												<FormControl>
-													<SelectTrigger>
-														<SelectValue placeholder="Select a color" />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													<SelectItem value="red">
-														Red
-													</SelectItem>
-													<SelectItem value="blue">
-														Blue
-													</SelectItem>
-												</SelectContent>
-											</Select>
-											<FormMessage />
-										</FormItem>
+					<Button
+						type="button"
+						className="mb-6"
+						variant={"secondary"}
+						onClick={() =>
+							variantColorsAppend({
+								color: "",
+								images: [],
+								ProductVariantSize: [
+									{
+										size: STOCK_SIZE.S,
+										stock: 0,
+										status: STOCK_STATUS.IN_STOCK,
+									},
+								],
+							})
+						}
+					>
+						<PlusCircleIcon className="w-4 h-4 mr-2" /> Add Variant
+						Color
+					</Button>
+					<div className="grid lg:grid-cols-2 gap-4">
+						{variantColorFields.map((color, colorIdx) => {
+							return (
+								<div
+									key={color.id}
+									className="relative border rounded-md shadow-sm p-6 space-y-4"
+								>
+									{variantColorFields.length > 1 && (
+										<Button
+											type="button"
+											variant={"destructive"}
+											className="absolute top-2 right-2"
+											onClick={() =>
+												variantColorsRemove(colorIdx)
+											}
+										>
+											<Trash2 className="w-4 h-4" />
+										</Button>
 									)}
-								/>
-							</div>
-						);
-					})}
+									{/* Variant Color */}
+									<FormField
+										control={form.control}
+										name={`ProductVariantColor.${colorIdx}.color`}
+										render={({ field }) => (
+											<FormItem className="max-w-sm">
+												<FormLabel>
+													Color #{colorIdx + 1}
+												</FormLabel>
+												<Select
+													onValueChange={
+														field.onChange
+													}
+													defaultValue={field.value}
+												>
+													<FormControl>
+														<SelectTrigger>
+															<SelectValue placeholder="Select a color" />
+														</SelectTrigger>
+													</FormControl>
+													<SelectContent>
+														<SelectItem value="red">
+															Red
+														</SelectItem>
+														<SelectItem value="blue">
+															Blue
+														</SelectItem>
+													</SelectContent>
+												</Select>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+
+									{/* Product Variant Images */}
+									<div>
+										<FormLabel>Images</FormLabel>
+										<ProductImageUploader
+											form={form}
+											colorIdx={colorIdx}
+										/>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+
+				<div>
+					<Button type="submit">Create new product</Button>
 				</div>
 			</form>
 		</Form>
