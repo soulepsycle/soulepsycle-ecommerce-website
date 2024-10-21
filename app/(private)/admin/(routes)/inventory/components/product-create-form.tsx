@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { createProductSchema } from "@/lib/schemas";
-import { TCreateProduct } from "@/lib/types";
+import { TCreateProduct, TProductCategory } from "@/lib/types";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,17 +25,23 @@ import {
 	Select,
 	SelectContent,
 	SelectItem,
-	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
 import ProductImageUploader from "./product-image-uploader";
-import { PlusCircle, PlusCircleIcon, Trash2 } from "lucide-react";
+import { PlusCircleIcon, Trash2 } from "lucide-react";
 import ProductVariantSizes from "./product-variant-sizes";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { convertToNormalCase } from "@/utils/string-util";
 
-const ProductCreateForm = () => {
+interface ProductCreateFormProps {
+	categories: TProductCategory[];
+}
+
+const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
+	categories,
+}) => {
 	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
@@ -139,12 +145,25 @@ const ProductCreateForm = () => {
 										</Button>
 									</div>
 									<SelectContent>
-										<SelectItem value="0fe4b1eb-f5c0-4a80-af7d-8fa8a42a30f6">
-											Shirts
-										</SelectItem>
-										<SelectItem value="9f2a3b52-6e25-493c-80cf-39c2bd938d29">
-											Tote Bags
-										</SelectItem>
+										{categories?.length === 0 && (
+											<SelectItem
+												className="text-sm text-muted-foreground"
+												value="no-category"
+											>
+												No such category.
+											</SelectItem>
+										)}
+
+										{categories &&
+											categories.length > 0 &&
+											categories.map((category) => (
+												<SelectItem
+													key={category.id}
+													value={category.id}
+												>
+													{convertToNormalCase(category.name)}
+												</SelectItem>
+											))}
 									</SelectContent>
 								</Select>
 								<FormMessage />

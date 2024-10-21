@@ -38,9 +38,13 @@ const ProductCategoryForm = () => {
 			);
 			if (response.status === 201) {
 				console.log("Created successfully");
-				router.push("/admin/inventory");
 				toast.success("Successfully created a new category");
 				form.reset();
+
+				setTimeout(() => {
+					router.push("/admin/inventory/create");
+					router.refresh();
+				}, 2000);
 			}
 		} catch (error) {
 			console.log("[INVENTORY_CATEGORY_CREATE]: " + error);
