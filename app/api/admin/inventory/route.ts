@@ -41,29 +41,28 @@ export async function POST(request: Request) {
 				code: newProduct.code,
 				category_id: newProduct.category_id,
 				ProductVariantColor: {
-					create: newProduct.ProductVariantColor.map((color) => (
-						{
-							color: color.color,
-							images: color.images,
-							ProductVariantSize: {
-								create: color.ProductVariantSize.map((size) => (
-									{
-										stock: size.stock,
-										status: size.status,
-										size: size.size,
-									}
-								))
-							}
-						}
-					))
-				}
-			}
-		})
-
-		return Response.json({
-			newProduct: newProduct,
-			REQ_METHOD: request.method,
+					create: newProduct.ProductVariantColor.map((color) => ({
+						color: color.color,
+						images: color.images,
+						ProductVariantSize: {
+							create: color.ProductVariantSize.map((size) => ({
+								stock: size.stock,
+								status: size.status,
+								size: size.size,
+							})),
+						},
+					})),
+				},
+			},
 		});
+
+		return Response.json(
+			{
+				newProduct: newProduct,
+				REQ_METHOD: request.method,
+			},
+			{ status: 201 }
+		);
 	} catch (error) {
 		console.log("[PRODUCTS_POST]: " + error);
 	}

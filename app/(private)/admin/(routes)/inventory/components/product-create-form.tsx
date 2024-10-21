@@ -34,6 +34,8 @@ import ProductVariantSizes from "./product-variant-sizes";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { convertToNormalCase } from "@/utils/string-util";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface ProductCreateFormProps {
 	categories: TProductCategory[];
@@ -84,10 +86,29 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
 	});
 
 	// 2. Define a submit handler.
-	const onSubmit = (values: TCreateProduct) => {
+	const onSubmit = async (values: TCreateProduct) => {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
 		console.log(values, "clicked");
+		try {
+			const response = await axios.post(
+				"/api/admin/inventory",
+				values
+			);
+
+			if (response.status === 201) {
+				console.log("Created successfully");
+				toast.success("Successfully created a new product");
+				form.reset();
+
+				setTimeout(() => {
+					router.push("/admin/inventory");
+					router.refresh();
+				}, 2000);
+			}
+		} catch (error) {
+			console.log("[PRODUCT_CREATE]: " + error);
+		}
 	};
 
 	const onError = (errors: any) => {
@@ -161,7 +182,9 @@ const ProductCreateForm: React.FC<ProductCreateFormProps> = ({
 													key={category.id}
 													value={category.id}
 												>
-													{convertToNormalCase(category.name)}
+													{convertToNormalCase(
+														category.name
+													)}
 												</SelectItem>
 											))}
 									</SelectContent>
