@@ -15,11 +15,11 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { STOCK_STATUS } from "@/lib/enums";
+import { STOCK_SIZE, STOCK_STATUS } from "@/lib/enums";
 import { TCreateProduct } from "@/lib/types";
 import { PlusCircleIcon, Trash2 } from "lucide-react";
 import React, { Fragment } from "react";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, UseFormReturn } from "react-hook-form";
 
 interface ProductVariantSizesProps {
 	form: UseFormReturn<TCreateProduct>;
@@ -45,7 +45,7 @@ const ProductVariantSizes: React.FC<ProductVariantSizesProps> = ({
 				type="button"
 				onClick={() =>
 					sizesAppend({
-						size: "",
+						size: STOCK_SIZE.S,
 						stock: 0,
 						status: STOCK_STATUS.IN_STOCK,
 					})
@@ -72,6 +72,43 @@ const ProductVariantSizes: React.FC<ProductVariantSizesProps> = ({
 							<FormLabel className="font-semibold">
 								Variant Size #{sizeIdx + 1}
 							</FormLabel>
+
+							{/* Product Status */}
+							<FormField
+								control={form.control}
+								name={`ProductVariantColor.${colorIdx}.ProductVariantSize.${sizeIdx}.size`}
+								render={({ field }) => (
+									<FormItem className="max-w-sm">
+										<FormLabel>Status</FormLabel>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Select a color" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{Object.values(
+													STOCK_SIZE
+												).map((status) => {
+													return (
+														<SelectItem
+															key={status}
+															value={status}
+														>
+															{status}
+														</SelectItem>
+													);
+												})}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
 							{/* Product Stock */}
 							<FormField
 								control={form.control}

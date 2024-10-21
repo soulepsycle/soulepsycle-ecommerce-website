@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { createProductSchema } from "@/lib/schemas";
@@ -19,8 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { STOCK_SIZE, STOCK_STATUS } from "@/lib/enums";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill's styles
+// import ReactQuill from 'react-quill-new';
+// import 'react-quill-new/dist/quill.snow.css';
 import {
 	Select,
 	SelectContent,
@@ -47,7 +47,7 @@ const ProductCreateForm = () => {
 	const form = useForm<TCreateProduct>({
 		resolver: zodResolver(createProductSchema),
 		defaultValues: {
-			category_id: "test-category",
+			category_id: "",
 			name: "test-name",
 			code: "test-code",
 			description: "test-description",
@@ -69,11 +69,15 @@ const ProductCreateForm = () => {
 	});
 
 	// 2. Define a submit handler.
-	function onSubmit(values: TCreateProduct) {
+	const onSubmit = (values: TCreateProduct) => {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
-		console.log(values);
-	}
+		console.log(values, "clicked");
+	};
+
+	const onError = (errors: any) => {
+		console.error("Validation errors:", errors);
+	};
 
 	const {
 		fields: variantColorFields,
@@ -86,10 +90,43 @@ const ProductCreateForm = () => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+			<form
+				onSubmit={form.handleSubmit(onSubmit, onError)}
+				className="space-y-8"
+			>
 				{/* Product Details */}
 				<div className="border rounded-md shadow-sm p-6">
 					<h1 className="text-3xl mb-6">Product</h1>
+
+					{/* Variant Color */}
+					<FormField
+						control={form.control}
+						name={`category_id`}
+						render={({ field }) => (
+							<FormItem className="max-w-sm">
+								<FormLabel>Category</FormLabel>
+								<Select
+									onValueChange={field.onChange}
+									defaultValue={field.value}
+								>
+									<FormControl>
+										<SelectTrigger>
+											<SelectValue placeholder="Select a category" />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										<SelectItem value="0fe4b1eb-f5c0-4a80-af7d-8fa8a42a30f6">
+											Shirts
+										</SelectItem>
+										<SelectItem value="9f2a3b52-6e25-493c-80cf-39c2bd938d29">
+											Tote Bags
+										</SelectItem>
+									</SelectContent>
+								</Select>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
 					<div className="max-w-3xl grid gap-4">
 						<FormField
@@ -110,7 +147,7 @@ const ProductCreateForm = () => {
 						/>
 
 						{/* Product Description */}
-						<FormField
+						{/* <FormField
 							control={form.control}
 							name="description"
 							render={({ field }) => (
@@ -132,7 +169,7 @@ const ProductCreateForm = () => {
 									<FormMessage />
 								</FormItem>
 							)}
-						/>
+						/> */}
 
 						{/* Product Price */}
 						<FormField

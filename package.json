@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -27,11 +27,10 @@
     "lucide-react": "^0.453.0",
     "next": "14.2.15",
     "next-cloudinary": "^6.15.0",
-    "quill": "^2.0.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
-    "react-quill": "^2.0.0",
+    "react-quill-new": "^3.3.3",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
