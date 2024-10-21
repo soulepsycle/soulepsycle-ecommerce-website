@@ -1,5 +1,6 @@
 import prisma from "@/lib/db";
 import { createProductCategorySchema } from "@/lib/schemas";
+import { convertToKebabCase } from "@/utils/string-util";
 
 export async function POST(request: Request) {
 	try {
@@ -8,7 +9,7 @@ export async function POST(request: Request) {
 		const validatedData = createProductCategorySchema.parse(json);
 
 		const newProductCategory = {
-			name: validatedData.name,
+			name: convertToKebabCase(validatedData.name),
 		};
 
 		await prisma.category.create({
