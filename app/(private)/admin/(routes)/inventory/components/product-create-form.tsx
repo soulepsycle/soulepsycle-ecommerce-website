@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { createProductSchema } from "@/lib/schemas";
@@ -19,8 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { STOCK_SIZE, STOCK_STATUS } from "@/lib/enums";
 
-// import ReactQuill from 'react-quill-new';
-// import 'react-quill-new/dist/quill.snow.css';
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
 import {
 	Select,
 	SelectContent,
@@ -31,8 +31,15 @@ import {
 import ProductImageUploader from "./product-image-uploader";
 import { PlusCircleIcon, Trash2 } from "lucide-react";
 import ProductVariantSizes from "./product-variant-sizes";
+import dynamic from "next/dynamic";
 
 const ProductCreateForm = () => {
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
 	const modules = {
 		toolbar: [
 			[{ header: "1" }, { header: "2" }],
@@ -147,7 +154,7 @@ const ProductCreateForm = () => {
 						/>
 
 						{/* Product Description */}
-						{/* <FormField
+						<FormField
 							control={form.control}
 							name="description"
 							render={({ field }) => (
@@ -169,7 +176,7 @@ const ProductCreateForm = () => {
 									<FormMessage />
 								</FormItem>
 							)}
-						/> */}
+						/>
 
 						{/* Product Price */}
 						<FormField
