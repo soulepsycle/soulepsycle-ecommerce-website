@@ -9,8 +9,17 @@ import {
 	BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { Cross2Icon } from "@radix-ui/react-icons";
 import {
 	Home,
 	LineChart,
@@ -63,7 +72,7 @@ const AdminMobileNavigation = () => {
 
 	return (
 		<header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-			<Sheet>
+			<Sheet open={isOpen}>
 				<SheetTrigger asChild>
 					<Button
 						type="button"
@@ -78,6 +87,16 @@ const AdminMobileNavigation = () => {
 				</SheetTrigger>
 
 				<SheetContent side="left" className="sm:max-w-xs">
+					<SheetClose onClick={() => setIsOpen(!isOpen)} className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+						<Cross2Icon className="h-4 w-4" />
+						<span className="sr-only">Close</span>
+					</SheetClose>
+					<div className="space-y-4 mb-6">
+						<SheetTitle>SoulePsycle</SheetTitle>
+						<SheetHeader>
+							<SheetDescription>Shop now!</SheetDescription>
+						</SheetHeader>
+					</div>
 					<nav className="grid gap-6 text-lg font-medium">
 						<Link
 							href="/admin"
