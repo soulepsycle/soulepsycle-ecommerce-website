@@ -1,3 +1,4 @@
+import prisma from "@/lib/db";
 import { createProductSchema } from "@/lib/schemas";
 
 export async function POST(request: Request) {
@@ -31,6 +32,33 @@ export async function POST(request: Request) {
 			code: validatedData.code,
 			ProductVariantColor: validatedVariantColor,
 		};
+
+		await prisma.product.create({
+			data: {
+				name: newProduct.name,
+				description: newProduct.description,
+				price: newProduct.price,
+				code: newProduct.code,
+				category_id: newProduct.category_id,
+				ProductVariantColor: {
+					create: newProduct.ProductVariantColor.map((color) => (
+						{
+							color: color.color,
+							images: color.images,
+							ProductVariantSize: {
+								create: color.ProductVariantSize.map((size) => (
+									{
+										stock: size.stock,
+										status: size.status,
+										size: size.size,
+									}
+								))
+							}
+						}
+					))
+				}
+			}
+		})
 
 		return Response.json({
 			newProduct: newProduct,

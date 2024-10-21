@@ -2,7 +2,7 @@
 CREATE TYPE "STOCK_SIZE" AS ENUM ('XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL');
 
 -- CreateEnum
-CREATE TYPE "STOCK_STATUS" AS ENUM ('IN_STOCK', 'OUT_OF_STOCK', 'DISCOUNTINUED');
+CREATE TYPE "STOCK_STATUS" AS ENUM ('IN_STOCK', 'OUT_OF_STOCK', 'DISCONTINUED');
 
 -- CreateTable
 CREATE TABLE "Bag" (
@@ -30,7 +30,7 @@ CREATE TABLE "Category" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ(6) NOT NULL,
+    "updated_at" TIMESTAMPTZ(6),
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );

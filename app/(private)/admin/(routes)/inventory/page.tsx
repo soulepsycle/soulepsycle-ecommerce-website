@@ -201,7 +201,12 @@ const InventoryPage = async () => {
 	const products = await getData();
 
 	return (
-		<ProductDataTable data={products} columns={columnsProductDataTable} />
+		<section>
+			<ProductDataTable
+				data={products}
+				columns={columnsProductDataTable}
+			/>
+		</section>
 	);
 };
 
