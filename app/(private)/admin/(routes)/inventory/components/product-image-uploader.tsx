@@ -27,10 +27,6 @@ const ProductImageUploader: React.FC<ProductImageUploaderProps> = ({
 		control: form.control,
 	});
 
-	console.log(
-		"imageFields:" + imageFields.map((image, idx) => imagesArray[idx])
-	);
-
 	return (
 		<div className="my-2">
 			<div>

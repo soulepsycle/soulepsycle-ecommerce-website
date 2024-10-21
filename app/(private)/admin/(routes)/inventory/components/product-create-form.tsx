@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import ProductImageUploader from "./product-image-uploader";
 import { PlusCircleIcon, Trash2 } from "lucide-react";
+import ProductVariantSizes from "./product-variant-sizes";
 
 const ProductCreateForm = () => {
 	const modules = {
@@ -74,10 +75,6 @@ const ProductCreateForm = () => {
 		console.log(values);
 	}
 
-	useEffect(() => {
-		console.log(form.getValues());
-	}, []);
-
 	const {
 		fields: variantColorFields,
 		append: variantColorsAppend,
@@ -86,8 +83,6 @@ const ProductCreateForm = () => {
 		name: "ProductVariantColor",
 		control: form.control,
 	});
-
-	console.log("variantColorFields: " + variantColorFields);
 
 	return (
 		<Form {...form}>
@@ -206,6 +201,8 @@ const ProductCreateForm = () => {
 						<PlusCircleIcon className="w-4 h-4 mr-2" /> Add Variant
 						Color
 					</Button>
+
+					{/* Variant Color Fields */}
 					<div className="grid lg:grid-cols-2 gap-4">
 						{variantColorFields.map((color, colorIdx) => {
 							return (
@@ -259,13 +256,23 @@ const ProductCreateForm = () => {
 										)}
 									/>
 
-									{/* Product Variant Images */}
-									<div>
-										<FormLabel>Images</FormLabel>
-										<ProductImageUploader
-											form={form}
-											colorIdx={colorIdx}
-										/>
+									<div className="space-x-4">
+										{/* Product Variant Images */}
+										<div>
+											<FormLabel>Images</FormLabel>
+											<ProductImageUploader
+												form={form}
+												colorIdx={colorIdx}
+											/>
+										</div>
+
+										{/* Product Variant Sizes */}
+										<div className="mt-6">
+											<ProductVariantSizes
+												form={form}
+												colorIdx={colorIdx}
+											/>
+										</div>
 									</div>
 								</div>
 							);
