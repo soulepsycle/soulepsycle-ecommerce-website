@@ -25,13 +25,15 @@ import {
 	Select,
 	SelectContent,
 	SelectItem,
+	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
 import ProductImageUploader from "./product-image-uploader";
-import { PlusCircleIcon, Trash2 } from "lucide-react";
+import { PlusCircle, PlusCircleIcon, Trash2 } from "lucide-react";
 import ProductVariantSizes from "./product-variant-sizes";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const ProductCreateForm = () => {
 	const [isClient, setIsClient] = useState(false);
@@ -95,6 +97,8 @@ const ProductCreateForm = () => {
 		control: form.control,
 	});
 
+	const router = useRouter();
+
 	return (
 		<Form {...form}>
 			<form
@@ -116,11 +120,24 @@ const ProductCreateForm = () => {
 									onValueChange={field.onChange}
 									defaultValue={field.value}
 								>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Select a category" />
-										</SelectTrigger>
-									</FormControl>
+									<div className="flex gap-2">
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Select a category" />
+											</SelectTrigger>
+										</FormControl>
+										<Button
+											type="button"
+											variant={"secondary"}
+											onClick={() =>
+												router.push(
+													"/admin/inventory/create/category"
+												)
+											}
+										>
+											<PlusCircleIcon className="w-4 h-4" />
+										</Button>
+									</div>
 									<SelectContent>
 										<SelectItem value="0fe4b1eb-f5c0-4a80-af7d-8fa8a42a30f6">
 											Shirts

@@ -1,6 +1,15 @@
 import { z } from "zod";
 import { STOCK_SIZE, STOCK_STATUS } from "./enums";
 
+export const productCategorySchema = z.object({
+	id: z.string().uuid("UUID is Invalid"),
+	name: z.string().nonempty("Name is required"),
+});
+
+export const createProductCategorySchema = productCategorySchema.omit({
+	id: true,
+});
+
 export const productVariantSizeSchema = z.object({
 	id: z.string().uuid("UUID is Invalid"),
 	product_variant_color_id: z.string().uuid("UUID is Invalid"),
