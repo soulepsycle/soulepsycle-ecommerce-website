@@ -7,6 +7,8 @@ import Image from "next/image";
 import DummyImage from "@/public/images/600x400.png";
 import { Button } from "@/components/ui/button";
 
+// TODO: Fetch data by Categry
+
 const FeaturedByCategory = ({
 	products,
 	category,
