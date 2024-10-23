@@ -1,6 +1,6 @@
-import FeaturedByCategory from "../components/featured-by-category";
-import FeaturedProducts from "../components/featured-products";
-import Header from "../components/header";
+import FeaturedByCategory from "../../components/featured-by-category";
+import FeaturedProducts from "../../components/featured-products";
+import Header from "../../components/header";
 
 const products = [
 	{ id: 1, name: "Classic Tote Bag", category: "tote-bag", price: 25.0 },
