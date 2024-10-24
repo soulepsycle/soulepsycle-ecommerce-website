@@ -8,6 +8,7 @@ import {
 	getSortedRowModel,
 	SortingState,
 	useReactTable,
+  VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
+import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
 
 interface ProductDataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -31,6 +33,8 @@ export function ProductDataTable<TData, TValue>({
 	data,
 }: ProductDataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>({})
 
 	const table = useReactTable({
 		data,
@@ -39,13 +43,18 @@ export function ProductDataTable<TData, TValue>({
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
 		state: {
 			sorting,
+      columnVisibility,
 		},
 	});
 
 	return (
 		<div className="grid gap-4">
+      <div>
+      <DataTableViewOptions table={table} />
+      </div>
 			<div className="rounded-md border">
 				<Table>
 					<TableHeader>
