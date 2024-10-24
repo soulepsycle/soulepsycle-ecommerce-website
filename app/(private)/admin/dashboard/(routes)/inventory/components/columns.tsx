@@ -1,5 +1,6 @@
 "use client";
 
+import { DataTableColumnHeader } from "@/components/ui/data-column-header";
 import { ColumnDef } from "@tanstack/react-table";
 
 // This type is used to define the shape of our data.
@@ -22,17 +23,19 @@ export const columns: ColumnDef<Product>[] = [
 	},
 	{
 		accessorKey: "name",
-		header: "Name",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Name" />
+		),
 	},
 	{
 		accessorKey: "category",
 		header: "Category",
 	},
-    {
+	{
 		accessorKey: "stock",
 		header: "Stock",
 	},
-    {
+	{
 		accessorKey: "status",
 		header: "Status",
 	},
